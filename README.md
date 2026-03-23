@@ -8,9 +8,6 @@
 - одноразового использования промокода пользователем
 - ограничений по категориям товаров
 - товаров, исключённых из акций
-
-Проект выполнен в рамках тестового задания.
-
 ---
 
 # Tech stack
@@ -20,6 +17,32 @@
 - Django REST Framework
 - PostgreSQL
 - pytest
+
+Локальный запуск:
+```bash
+git clone https://github.com/KirillGusev0/Task_promo_service.git
+cd promo_service
+python3 -m venv venv
+
+# Linux / macOS
+source venv/bin/activate
+
+# Windows
+venv\Scripts\activate
+
+pip install --upgrade pip
+pip install -r requirements.txt
+
+python manage.py migrate
+python manage.py runserver 0.0.0.0:8002
+```
+После чего сервер будет доступен по адресу: http://127.0.0.1:8002
+Запуск через Docker:
+```bash
+docker compose up --build
+docker compose exec web python manage.py migrate
+```
+После чего сервер будет доступен по адресу: http://127.0.0.1:8002
 
 ТЗ: Промокоды при создании заказа
 В системе есть пользователи, заказы, товары и промокоды. При создании заказа пользователь может указать промокод. Промокод даёт процентную скидку на заказ с некоторыми условиями.
