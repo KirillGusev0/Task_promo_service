@@ -4,6 +4,7 @@ from orders.services.promo_service import apply_promo_code
 from django.utils import timezone
 from orders.models import PromoCodeUsage
 
+
 @pytest.mark.django_db
 def test_apply_valid_promo(user, product, promo):
     items = [{"product": product, "quantity": 2}]
@@ -12,7 +13,6 @@ def test_apply_valid_promo(user, product, promo):
 
     assert result["discount_percent"] == promo.discount_percent
     assert result["items"][0]["discount"] > 0
-
 
 
 @pytest.mark.django_db
@@ -24,7 +24,6 @@ def test_expired_promo(user, product, promo):
 
     with pytest.raises(Exception):
         apply_promo_code(user, "TEST10", items)
-
 
 
 @pytest.mark.django_db

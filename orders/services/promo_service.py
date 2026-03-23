@@ -3,10 +3,10 @@ from django.utils import timezone
 
 from orders.models import PromoCode, PromoCodeUsage
 
-
 # =====================
 # Exceptions
 # =====================
+
 
 class PromoCodeError(Exception):
     pass
@@ -32,8 +32,9 @@ class PromoCodeAlreadyUsed(PromoCodeError):
 # Service
 # =====================
 
+
 def apply_promo_code(user, promo_code_str, items):
-    
+
     now = timezone.now()
 
     try:
@@ -41,15 +42,12 @@ def apply_promo_code(user, promo_code_str, items):
     except PromoCode.DoesNotExist:
         raise PromoCodeNotFound("Promo code not found")
 
-    
     if not (promo.active_from <= now <= promo.active_to):
         raise PromoCodeExpired("Promo code expired")
 
-    
     if promo.used_count >= promo.max_uses:
         raise PromoCodeUsageExceeded("Promo code usage limit reached")
 
-    
     if PromoCodeUsage.objects.filter(user=user, promo_code=promo).exists():
         raise PromoCodeAlreadyUsed("Promo code already used by this user")
 
@@ -61,20 +59,16 @@ def apply_promo_code(user, promo_code_str, items):
         product = item["product"]
         quantity = item["quantity"]
 
-        
         item["discount_percent"] = Decimal("0")
         item["discount_rate"] = Decimal("0")
-        item["discount"] = Decimal("0")  
+        item["discount"] = Decimal("0")
 
-       
         if product.is_excluded_from_promos:
             continue
 
-        
         if promo_categories and product.category not in promo_categories:
             continue
 
-        
         discount_percent = promo.discount_percent
         discount_rate = discount_percent / Decimal("100")
 
@@ -84,7 +78,7 @@ def apply_promo_code(user, promo_code_str, items):
         line_price = product.price * quantity
         discount_amount = line_price * discount_rate
 
-        item["discount"] = discount_amount  
+        item["discount"] = discount_amount
         total_discount += discount_amount
 
     return {

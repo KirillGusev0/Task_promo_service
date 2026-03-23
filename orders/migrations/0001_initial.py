@@ -15,78 +15,183 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('discount', models.DecimalField(decimal_places=2, default=0, max_digits=5)),
-                ('total', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    "discount",
+                    models.DecimalField(decimal_places=2, default=0, max_digits=5),
+                ),
+                ("total", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="orders",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('is_excluded_from_promos', models.BooleanField(default=False)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='products', to='orders.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("is_excluded_from_promos", models.BooleanField(default=False)),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="products",
+                        to="orders.category",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='OrderItem',
+            name="OrderItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.PositiveIntegerField()),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('discount', models.DecimalField(decimal_places=2, default=0, max_digits=5)),
-                ('total', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='orders.order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orders.product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.PositiveIntegerField()),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    "discount",
+                    models.DecimalField(decimal_places=2, default=0, max_digits=5),
+                ),
+                ("total", models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="items",
+                        to="orders.order",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="orders.product"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='PromoCode',
+            name="PromoCode",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(max_length=50, unique=True)),
-                ('discount_percent', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('active_from', models.DateTimeField()),
-                ('active_to', models.DateTimeField()),
-                ('max_uses', models.PositiveIntegerField()),
-                ('used_count', models.PositiveIntegerField(default=0)),
-                ('categories', models.ManyToManyField(blank=True, to='orders.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("code", models.CharField(max_length=50, unique=True)),
+                (
+                    "discount_percent",
+                    models.DecimalField(decimal_places=2, max_digits=5),
+                ),
+                ("active_from", models.DateTimeField()),
+                ("active_to", models.DateTimeField()),
+                ("max_uses", models.PositiveIntegerField()),
+                ("used_count", models.PositiveIntegerField(default=0)),
+                (
+                    "categories",
+                    models.ManyToManyField(blank=True, to="orders.category"),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='order',
-            name='promo_code',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='orders.promocode'),
+            model_name="order",
+            name="promo_code",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="orders.promocode",
+            ),
         ),
         migrations.CreateModel(
-            name='PromoCodeUsage',
+            name="PromoCodeUsage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('used_at', models.DateTimeField(auto_now_add=True)),
-                ('promo_code', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='orders.promocode')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("used_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "promo_code",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="orders.promocode",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AddConstraint(
-            model_name='promocode',
-            constraint=models.CheckConstraint(condition=models.Q(('max_uses__gte', 0)), name='max_uses_positive'),
+            model_name="promocode",
+            constraint=models.CheckConstraint(
+                condition=models.Q(("max_uses__gte", 0)), name="max_uses_positive"
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='promocodeusage',
-            unique_together={('user', 'promo_code')},
+            name="promocodeusage",
+            unique_together={("user", "promo_code")},
         ),
     ]

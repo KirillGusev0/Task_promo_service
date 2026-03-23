@@ -20,11 +20,7 @@ def category():
 
 @pytest.fixture
 def product(category):
-    return Product.objects.create(
-        name="Apple",
-        price=100,
-        category=category
-    )
+    return Product.objects.create(name="Apple", price=100, category=category)
 
 
 @pytest.fixture
@@ -35,7 +31,7 @@ def promo(category):
         discount_percent=10,
         active_from=now - timedelta(days=1),
         active_to=now + timedelta(days=1),
-        max_uses=10
+        max_uses=10,
     )
     promo.categories.add(category)
     return promo
